@@ -7,7 +7,10 @@ test('week structure and Saturday lock',()=>{
   const w=plus(monday(today()),7);
   const [a,h,b,o]=schedule(state,w);
   assert.deepEqual([a.kind,h.kind,b.kind,o.kind],['A','H','B','O']);
-  assert.deepEqual(candidates(state,b),[plus(w,2),plus(w,4)]);
+  assert.equal(h.date,plus(w,2));
+  assert.deepEqual(candidates(state,b),[plus(w,4)]);
+  state.sessions[h.id]={...h,date:plus(w,1),status:'done'};
+  assert.equal(schedule(state,w).find(item=>item.id===h.id).date,plus(w,1));
 });
 test('short mode and left/right sequencing',()=>{
   const state=setup();

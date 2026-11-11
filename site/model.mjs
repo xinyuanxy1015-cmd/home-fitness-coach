@@ -22,9 +22,9 @@ export const weekday = date => (new Date(date+'T12:00:00').getDay()+6)%7;
 export const monday = date => plus(date,-weekday(date));
 export const days = week => Array.from({length:7},(_,i)=>plus(week,i));
 export function schedule(state, week) {
-  return Object.entries({A:0,H:1,B:3,O:6}).map(([kind,offset])=>{
+  return Object.entries({A:0,H:2,B:3,O:6}).map(([kind,offset])=>{
     const id = week+kind;
-    return {kind,id,date:state.shifts[id] ?? plus(week,offset)};
+    return {kind,id,date:state.sessions[id]?.date ?? state.shifts[id] ?? plus(week,offset)};
   }).sort((a,b)=>a.date.localeCompare(b.date));
 }
 export function candidates(state, item) {
