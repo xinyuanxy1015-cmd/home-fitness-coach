@@ -10,7 +10,7 @@ const weekdays=['一','二','三','四','五','六','日'];
 const fmt=d=>d.slice(5).replace('-','/');
 const btn=(label,action,extra='',cls='')=>`<button class="${cls}" data-action="${action}" ${extra}>${label}</button>`;
 const card=(title,body)=>`<section class="card"><h2>${title}</h2>${body}</section>`;
-const photo=id=>`<figure><img src="./art/${id}.jpg" alt="${moves[id][0]}的起始位与结束位" width="598" height="326"><figcaption><span>起始位</span><span>结束位</span></figcaption></figure>`;
+const photo=id=>`<figure><img src="./art/${id}.jpg" alt="${moves[id][0]}的起始位与结束位" width="598" height="${id==='deadbug'?299:326}"><figcaption><span>起始位</span><span>${id==='deadbug'?'左手 + 右腿伸出':'结束位'}</span></figcaption></figure>`;
 const current=()=>location.hash.slice(1)||'today';
 const strength=item=>['A','B'].includes(item.kind);
 const completed=s=>s && s.status!=='skipped';
@@ -126,7 +126,7 @@ function workout() {
   const s=d.steps[d.index];
   const [name,tip,tip2,,weighted]=moves[s.variant];
   return heading+`<progress value="${d.index}" max="${d.steps.length}" aria-label="训练进度"></progress>`+
-    card(name,`<p class="set-meta">第 ${s.set}/${s.sets} 组${s.side?' · '+s.side+'侧':''} · 目标 ${s.target} 个</p>${photo(s.variant)}
+    card(name,`<p class="set-meta">第 ${s.set}/${s.sets} 组${s.side?' · '+(s.variant==='deadbug'?s.side+'手 + '+(s.side==='左'?'右':'左')+'腿':s.side+'侧'):''} · 目标 ${s.target} 个</p>${photo(s.variant)}
     <ul class="tips"><li>${tip}</li><li>${tip2}</li></ul>
     <form data-form="set"><div class="fields"><label>实际次数<input required id="reps" name="reps" type="number" inputmode="numeric" min="0" max="150" value="${s.target}"></label>
     ${weighted?`<label>每只哑铃 kg<input required name="kg" type="number" inputmode="decimal" min="0" max="100" step="0.1" value="${s.kg}"></label>`:''}</div>
